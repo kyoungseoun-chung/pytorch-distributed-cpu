@@ -12,6 +12,15 @@ This cluster allows us to utilize up to 48 CPUs, therefore, I came up with an id
 
 If you already have a dedicated GPU, this might not be an option. However, if you are eager to learn machine learning but have no chance to get a graphic card, this can be your option.
 
+## Before starts:
+
+PyTorch is already compiled with OpenMP. Therefore, running the script for training in your local system will utilize multi-threading.
+
+However, if you submit a job in the cluster, this will be a different story. I presume that the number of threads that PyTorch recognizes is only dependent on the host cluster, therefore, a maximum number of threads available is kinda independent of the number of cores that you submit for your job.
+In this reason, you need special treatment (use of ```torch.nn.parallel.DistributedDataParallel``` module) to utilize all cores that you submitted.
+
+Note: I am not 100% certain about this part, so, please correct me if I am wrong.
+
 ## How is it possible?
 
 In [PyTorch](https://pytorch.org/), there is a module called, ```torch.nn.parallel.DistributedDataParallel```. In combination with ```torch.utils.data.DistributedSampler```, you can utilize distributed training for your machine learning project.

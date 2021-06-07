@@ -32,6 +32,12 @@ def init_process(rank, size, backend='gloo'):
     np.random.seed(0)
 
 
+def clean_up(self):
+    """kill all multiprocessing groups
+    """
+    dist.destroy_process_group()
+
+
 def training_distributed(world_size):
     """start distributed training
     """
@@ -43,16 +49,20 @@ def training_distributed(world_size):
 
 def run_training(rank, world_size):
 
+    # initialize multiprocessing environment
     init_process(rank, world_size)
 
+    # smaple model: resnet50
     model = models.resnet50()
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
+    # fake data set for test: size=1000
     dataset = datasets.FakeData(
         size=1000,
         transform=transforms.ToTensor())
 
+    # sampler
     sampler = DistributedSampler(dataset)
     loader = DataLoader(
         dataset,
@@ -71,6 +81,10 @@ def run_training(rank, world_size):
     if rank == 0:
         tic = time.time()
 
+    # Not in this example but if you have a number of epochs, calling
+    # set_epoch function for the data sampler will enhance the model
+    # accuracy e.g) sampler.set_epoch(epoch)
+
     for i, (data, target) in enumerate(loader):
         data = data.to(device)
         target = target.to(device)
@@ -84,14 +98,18 @@ def run_training(rank, world_size):
     if rank == 0:
         print(f'Done in {time.time() - tic} [s]')
 
+    clean_up()
+
 
 if __name__ == "__main__":
-    # config for distributed training related
+
     try:
         # to get number of core available when you submit the job
         # in the cluster using bsub -n command
+        # this (probably) works with the cluster which is using lsf environment
         world_size = int(os.environ['LSB_DJOB_NUMPROC'])
     except KeyError:
+        # otherwise, use maximum number of cpu available
         world_size = os.cpu_count()
 
     training_distributed(world_size)
