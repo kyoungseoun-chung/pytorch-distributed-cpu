@@ -67,10 +67,23 @@ It is primarily developed for distributed GPU training (multiple GPUs), but rece
 ## Test results:
 resnet50 test with Fakedata size 1000
 
-|      System      	| Elapsed time [s] 	|
-|:----------------:	|:----------------:	|
-| GTX1060 (laptop) 	|        39        	|
-|  Euler - 4 cpus  	|        239       	|
-|   Euler - 8 cpus  	 |         160       	 |
-|   Euler - 12 cpus    |         144          |
-|   Euler - 24 cpus    |          82          |
+| System             | Elapsed time [s]   |
+| :----------------: | :----------------: |
+| GTX2080 Ti         | 20                 |
+| GTX1060 (laptop)   | 39                 |
+| Euler - 4 cpus     | 239                |
+| Euler - 8 cpus     | 160                |
+| Euler - 12 cpus    | 144                |
+| Euler - 24 cpus    | 82                 |
+
+## Conclusion:
+
+It is obvious that GPU training is way faster than CPU training. Even slightly outdated GTX 1060 shows 4 times better performance than 24 CPUs.
+
+However, if you are a student, who only has a laptop without a dedicated GPU on it, and no way to get a GPU in near future, this might be a good solution.
+
+Also, based on my experience, if your network is shallow (in my case, two hidden layers with 256 x 256 neurons), the training bottleneck comes from CPU, not GPU. In this case, distributed CPU training can outperform single GPU training.
+
+Moreover, one other good thing about using cluster is that you can submit a job and can forget about that. Your system will not scream and your workplace will be cool as charm.
+
+Hope this can help your study or research.
