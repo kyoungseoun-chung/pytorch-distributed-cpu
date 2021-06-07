@@ -24,8 +24,9 @@ It is primarily developed for distributed GPU training (multiple GPUs), but rece
 
 ```python
     torch.multiprocessing.spawn(run_training, args=(world_size,),
-								nprocs=world_size, join=True)
+	nprocs=world_size, join=True)
 ```
+
 	Here, ```run_training``` is the function where your actual training is implemented. In this example, the function has inputs of ```rank``` and ```world_size```.
 
 - Initialize multiprocessing environment with ```gloo``` back-end. This backend is not optimized for distributed GPU training but, if you want to use CPU as distributed environment, use ```gloo```. And don't forget to setting ```MASTER_ADDR``` and ```MASTER_PORT``` to your environment variable.
@@ -35,7 +36,7 @@ It is primarily developed for distributed GPU training (multiple GPUs), but rece
     os.environ['MASTER_PORT'] = '12254'
 
     torch.distributed.init_process_group(backend,
-										 rank=rank, world_size=size)
+	rank=rank, world_size=size)
 
     # Disabling randomness (recommended)
     torch.manual_seed(0)
