@@ -79,10 +79,8 @@ def run_training(rank, world_size):
         loss = criterion(output, target)
         loss.backward()
 
-        if rank == 0 and i % 100 == 0:
-            print(f'{i+1} / 1000')
-
     dist.barrier()
+
     if rank == 0:
         print(f'Done in {time.time() - tic} [s]')
 
