@@ -12,7 +12,7 @@ This cluster allows us to utilize up to 48 CPUs, therefore, I came up with an id
 
 If you already have a dedicated GPU, this might not be an option. However, if you are eager to learn machine learning but have no chance to get a graphic card, this can be your option.
 
-## How is possible?
+## How is it possible?
 
 In [PyTorch](https://pytorch.org/), there is a module called, ```torch.nn.parallel.DistributedDataParallel```. In combination with ```torch.utils.data.DistributedSampler```, you can utilize distributed training for your machine learning project.
 
@@ -52,7 +52,7 @@ It is primarily developed for distributed GPU training (multiple GPUs), but rece
     )
 ```
 
-- Finally, load the model to ```DistributedDataParallel``` module. The important thing is, you need to set ```device_ids``` as ```None``` or empty list ```[]```.
+- Finally, load the model to ```DistributedDataParallel``` module. The important thing is, you need to set ```device_ids``` as ```None``` or empty list ```[]```. And don't forget to set the device as cpu not cuda.
 
 ```python
     device = torch.device('cpu')
@@ -80,10 +80,10 @@ resnet50 test with Fakedata size 1000
 
 It is obvious that GPU training is way faster than CPU training. Even slightly outdated GTX 1060 shows 4 times better performance than 24 CPUs.
 
-However, if you are a student, who only has a laptop without a dedicated GPU on it, and no way to get a GPU in near future, this might be a good solution.
+However, if you are a student, who only has a laptop without a dedicated GPU on it, and no way to get a GPU in near future, this might be a good solution. (in our case, we can use up to 48 cores -haven't tested yet-. I guess this will give more-or-less same performance with GTX 1060 for the current test case. Not bad. Right?)
 
-Also, based on my experience, if your network is shallow (in my case, two hidden layers with 256 x 256 neurons), the training bottleneck comes from CPU, not GPU. In this case, distributed CPU training can outperform single GPU training.
+Also, based on my experience, if your network is shallow (for example, two hidden layers with 256 x 256 neurons), the training bottleneck comes from CPU (data loading mostly), not GPU. In this case, distributed CPU training can outperform single GPU training.
 
-Moreover, one other good thing about using cluster is that you can submit a job and can forget about that. Your system will not scream and your workplace will be cool as charm.
+Moreover, one other good thing about using cluster is that you can submit a job and can forget about that. Thus, your system will not scream due to GPU utilization, and your workplace will be cool as charm.
 
 Hope this can help your study or research.
