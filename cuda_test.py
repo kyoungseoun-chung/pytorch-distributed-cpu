@@ -36,7 +36,5 @@ for i, (data, target) in enumerate(loader):
     output = model(data)
     loss = criterion(output, target)
     loss.backward()
-    if i % 100 == 0:
-        print(f'{i+1} / 1000')
 
 print(f'Done in {time.time() - tic} [s]')
