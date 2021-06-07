@@ -14,7 +14,7 @@ If you already have a dedicated GPU, this might not be an option. However, if yo
 
 ## How is possible?
 
-In [PyTorch](https://pytorch.org/), there is a module called, *DistributedDataParallel*. In combination with *DistributedSampler*, you can utilize distributed training for your machine learning project.
+In [PyTorch](https://pytorch.org/), there is a module called, ```torch.nn.parallel.DistributedDataParallel```. In combination with ```torch.utils.data.DistributedSampler```, you can utilize distributed training for your machine learning project.
 
 It is primarily developed for distributed GPU training (multiple GPUs), but recently distributed CPU training becomes possible. To enable multi-CPU training, you need to keep in mind several things.
 
@@ -27,7 +27,8 @@ It is primarily developed for distributed GPU training (multiple GPUs), but rece
 	nprocs=world_size, join=True)
 ```
 
-	Here, ```run_training``` is the function where your actual training is implemented. In this example, the function has inputs of ```rank``` and ```world_size```.
+
+(Here, ```run_training``` is the function where your actual training is implemented. In this example, the function has inputs of ```rank``` and ```world_size```.)
 
 - Initialize multiprocessing environment with ```gloo``` back-end. This backend is not optimized for distributed GPU training but, if you want to use CPU as distributed environment, use ```gloo```. And don't forget to setting ```MASTER_ADDR``` and ```MASTER_PORT``` to your environment variable.
 
