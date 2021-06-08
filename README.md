@@ -84,12 +84,13 @@ resnet50 test with Fakedata size 1000
 | Euler - 8 cpus     | 160                |
 | Euler - 12 cpus    | 144                |
 | Euler - 24 cpus    | 82                 |
+| Euler - 48 cpus    | 44                 |
 
 ## Conclusion:
 
 It is obvious that GPU training is way faster than CPU training. Even slightly outdated GTX 1060 shows 4 times better performance than 24 CPUs.
 
-However, if you are a student, who only has a laptop without a dedicated GPU on it, and no way to get a GPU in near future, this might be a good solution. (in our case, we can use up to 48 cores -haven't tested yet-. I guess this will give more-or-less same performance with GTX 1060 for the current test case. Not bad. Right?)
+However, if you are a student, who only has a laptop without a dedicated GPU on it, and no way to get a GPU in near future, this might be a good solution. (in our case, we can use up to 48 cores, and could obtain more-or-less same performance with GTX 1060 for the current test case. Not bad. Right?)
 
 Also, based on my experience, if your network is shallow (for example, two hidden layers with 256 x 256 neurons), the training bottleneck comes from CPU (data loading mostly), not GPU. In this case, distributed CPU training can outperform single GPU training.
 
